@@ -7,6 +7,7 @@ This document provides consistent behavior guidelines for developing the Conduit
 Conduit is a Turbo monorepo with the following structure:
 - `apps/web` - Main web application (Next.js with TanStack Router, TanStack Query, Zustand)
 - `apps/docs` - Documentation site (Next.js)
+- `apps/infra` - AWS CDK infrastructure application
 - `packages/ui` - Shared UI components with organized structure:
   - `components/` - Reusable UI components (Button, Card, Code, etc.)
   - `pages/` - Page-level components and layouts
@@ -111,3 +112,24 @@ The `packages/ui` package follows a structured approach:
 - Use `pnpm` as the package manager
 - Version is locked to `pnpm@9.0.0` in `package.json`
 - Use `pnpm install` to add new dependencies
+
+## Infrastructure (apps/infra)
+
+The infrastructure app uses AWS CDK to manage cloud resources:
+
+### Infrastructure Commands
+- `pnpm infra:build` - Build the CDK application
+- `pnpm infra:synth` - Synthesize CloudFormation templates
+- `pnpm infra:diff` - Show differences between deployed stack and current state
+- `pnpm infra:deploy` - Deploy infrastructure to AWS (uses devswarm-trevor profile)
+- `pnpm infra:destroy` - Destroy infrastructure from AWS (uses devswarm-trevor profile)
+
+### Infrastructure Structure
+- `apps/infra/src/constructs/` - Reusable CDK constructs
+- `apps/infra/src/stacks/` - CDK stack definitions
+- `apps/infra/src/types/` - TypeScript type definitions
+- `apps/infra/src/app.ts` - CDK app entry point
+
+### AWS Profile
+- Infrastructure deployment uses the `devswarm-trevor` AWS profile
+- Ensure this profile is configured in your AWS CLI before deploying
