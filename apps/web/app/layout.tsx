@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Layout } from "@repo/ui/components/Layout";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -27,7 +28,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="//demo.productionready.io/main.css" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
