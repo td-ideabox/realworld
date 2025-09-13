@@ -5,9 +5,14 @@ This document provides consistent behavior guidelines for developing the Conduit
 ## Project Structure
 
 Conduit is a Turbo monorepo with the following structure:
-- `apps/web` - Main web application (Next.js)
+- `apps/web` - Main web application (Next.js with TanStack Router, TanStack Query, Zustand)
 - `apps/docs` - Documentation site (Next.js)
-- `packages/ui` - Shared UI components
+- `packages/ui` - Shared UI components with organized structure:
+  - `components/` - Reusable UI components (Button, Card, Code, etc.)
+  - `pages/` - Page-level components and layouts
+  - `hooks/` - Custom React hooks
+  - `stores/` - Zustand store definitions
+  - `routing/` - TanStack Router utilities and route definitions
 - `packages/eslint-config` - ESLint configuration
 - `packages/typescript-config` - TypeScript configurations
 
@@ -84,6 +89,22 @@ Before considering any change complete:
 - Both web and docs apps use the Conduit CSS from `//demo.productionready.io/main.css`
 - Follow the existing design patterns and components
 - Ensure consistent styling across all applications
+
+## Frontend Libraries
+
+### Main Web Application Stack
+The `apps/web` application uses the following modern frontend libraries:
+- **TanStack Query (@tanstack/react-query)** - Server state management and data fetching
+- **TanStack Router (@tanstack/react-router)** - Type-safe client-side routing
+- **Zustand** - Lightweight state management for client state
+
+### UI Package Structure
+The `packages/ui` package follows a structured approach:
+- **Components**: Use for reusable UI components that can be shared across applications
+- **Pages**: Place page-level components and complex layouts here
+- **Hooks**: Custom React hooks for shared logic and state management
+- **Stores**: Zustand store definitions for shared application state
+- **Routing**: TanStack Router utilities, route definitions, and routing helpers
 
 ## Package Manager
 
