@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "462e15cb69290e4ae920d161e99a25edb36f38d3e5a6dd39611a772c550bde6d": {
+      "displayName": "ConduitHelloStack Template",
+      "source": {
+        "path": "ConduitHelloStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "944082871526-us-west-2-b89a737e": {
+          "bucketName": "cdk-hnb659fds-assets-944082871526-us-west-2",
+          "objectKey": "462e15cb69290e4ae920d161e99a25edb36f38d3e5a6dd39611a772c550bde6d.json",
+          "region": "us-west-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::944082871526:role/cdk-hnb659fds-file-publishing-role-944082871526-us-west-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

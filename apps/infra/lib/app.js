@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("source-map-support/register");
+const aws_cdk_lib_1 = require("aws-cdk-lib");
+const Hello_stack_1 = require("./stacks/Hello.stack");
+const app = new aws_cdk_lib_1.App();
+new Hello_stack_1.HelloStack(app, 'ConduitHelloStack', {
+    env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION,
+    },
+    bucketName: 'conduit-hello-bucket',
+});
+app.synth();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2FwcC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFDQSx1Q0FBcUM7QUFDckMsNkNBQWtDO0FBQ2xDLHNEQUFrRDtBQUVsRCxNQUFNLEdBQUcsR0FBRyxJQUFJLGlCQUFHLEVBQUUsQ0FBQztBQUV0QixJQUFJLHdCQUFVLENBQUMsR0FBRyxFQUFFLG1CQUFtQixFQUFFO0lBQ3ZDLEdBQUcsRUFBRTtRQUNILE9BQU8sRUFBRSxPQUFPLENBQUMsR0FBRyxDQUFDLG1CQUFtQjtRQUN4QyxNQUFNLEVBQUUsT0FBTyxDQUFDLEdBQUcsQ0FBQyxrQkFBa0I7S0FDdkM7SUFDRCxVQUFVLEVBQUUsc0JBQXNCO0NBQ25DLENBQUMsQ0FBQztBQUVILEdBQUcsQ0FBQyxLQUFLLEVBQUUsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIiMhL3Vzci9iaW4vZW52IG5vZGVcbmltcG9ydCAnc291cmNlLW1hcC1zdXBwb3J0L3JlZ2lzdGVyJztcbmltcG9ydCB7IEFwcCB9IGZyb20gJ2F3cy1jZGstbGliJztcbmltcG9ydCB7IEhlbGxvU3RhY2sgfSBmcm9tICcuL3N0YWNrcy9IZWxsby5zdGFjayc7XG5cbmNvbnN0IGFwcCA9IG5ldyBBcHAoKTtcblxubmV3IEhlbGxvU3RhY2soYXBwLCAnQ29uZHVpdEhlbGxvU3RhY2snLCB7XG4gIGVudjoge1xuICAgIGFjY291bnQ6IHByb2Nlc3MuZW52LkNES19ERUZBVUxUX0FDQ09VTlQsXG4gICAgcmVnaW9uOiBwcm9jZXNzLmVudi5DREtfREVGQVVMVF9SRUdJT04sXG4gIH0sXG4gIGJ1Y2tldE5hbWU6ICdjb25kdWl0LWhlbGxvLWJ1Y2tldCcsXG59KTtcblxuYXBwLnN5bnRoKCk7Il19
