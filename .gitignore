@@ -27,6 +27,15 @@ out/
 build
 dist
 
+# CDK
+cdk.out/
+*.js
+*.d.ts
+*.d.ts.map
+
+# TypeScript compilation output
+lib/
+
 
 # Debug
 npm-debug.log*

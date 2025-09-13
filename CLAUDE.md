@@ -6,10 +6,16 @@ This document provides consistent behavior guidelines for developing the Conduit
 
 Conduit is a Turbo monorepo with the following structure:
 
-- `apps/web` - Main web application (Next.js)
+- `apps/web` - Main web application (Next.js with TanStack Router, TanStack Query, Zustand)
 - `apps/docs` - Documentation site (Next.js)
 - `apps/api` - REST API server (Express.js with service layer architecture)
-- `packages/ui` - Shared UI components
+- `apps/infra` - AWS CDK infrastructure application
+- `packages/ui` - Shared UI components with organized structure:
+  - `components/` - Reusable UI components (Button, Card, Code, etc.)
+  - `pages/` - Page-level components and layouts
+  - `hooks/` - Custom React hooks
+  - `stores/` - Zustand store definitions
+  - `routing/` - TanStack Router utilities and route definitions
 - `packages/eslint-config` - ESLint configuration
 - `packages/typescript-config` - TypeScript configurations
 
@@ -99,6 +105,22 @@ Before considering any change complete:
 - Follow the existing design patterns and components
 - Ensure consistent styling across all applications
 
+## Frontend Libraries
+
+### Main Web Application Stack
+The `apps/web` application uses the following modern frontend libraries:
+- **TanStack Query (@tanstack/react-query)** - Server state management and data fetching
+- **TanStack Router (@tanstack/react-router)** - Type-safe client-side routing
+- **Zustand** - Lightweight state management for client state
+
+### UI Package Structure
+The `packages/ui` package follows a structured approach:
+- **Components**: Use for reusable UI components that can be shared across applications
+- **Pages**: Place page-level components and complex layouts here
+- **Hooks**: Custom React hooks for shared logic and state management
+- **Stores**: Zustand store definitions for shared application state
+- **Routing**: TanStack Router utilities, route definitions, and routing helpers
+
 ## Package Manager
 
 - Use `pnpm` as the package manager
@@ -143,3 +165,24 @@ The API includes a hello endpoint at `/api/hello` that demonstrates:
 - `cd apps/api && pnpm dev` - Start API server in development mode (port 3001)
 - `cd apps/api && pnpm build` - Build the API application
 - `cd apps/api && pnpm start` - Start built API server
+
+## Infrastructure (apps/infra)
+
+The infrastructure app uses AWS CDK to manage cloud resources:
+
+### Infrastructure Commands
+- `pnpm infra:build` - Build the CDK application
+- `pnpm infra:synth` - Synthesize CloudFormation templates
+- `pnpm infra:diff` - Show differences between deployed stack and current state
+- `pnpm infra:deploy` - Deploy infrastructure to AWS (uses devswarm-trevor profile)
+- `pnpm infra:destroy` - Destroy infrastructure from AWS (uses devswarm-trevor profile)
+
+### Infrastructure Structure
+- `apps/infra/src/constructs/` - Reusable CDK constructs
+- `apps/infra/src/stacks/` - CDK stack definitions
+- `apps/infra/src/types/` - TypeScript type definitions
+- `apps/infra/src/app.ts` - CDK app entry point
+
+### AWS Profile
+- Infrastructure deployment uses the `devswarm-trevor` AWS profile
+- Ensure this profile is configured in your AWS CLI before deploying

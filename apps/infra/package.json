@@ -1,0 +1,32 @@
+{
+  "name": "infra",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "deploy": "cdk deploy --profile devswarm-trevor",
+    "destroy": "cdk destroy --profile devswarm-trevor",
+    "diff": "cdk diff --profile devswarm-trevor",
+    "synth": "cdk synth --profile devswarm-trevor",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.154.1",
+    "constructs": "^10.3.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.15.3",
+    "aws-cdk": "^2.154.1",
+    "eslint": "^9.34.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "5.9.2"
+  }
+}
