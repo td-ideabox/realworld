@@ -5,8 +5,11 @@ This document provides consistent behavior guidelines for developing the Conduit
 ## Project Structure
 
 Conduit is a Turbo monorepo with the following structure:
+
 - `apps/web` - Main web application (Next.js with TanStack Router, TanStack Query, Zustand)
 - `apps/docs` - Documentation site (Next.js)
+- `apps/api` - REST API server (Express.js with service layer architecture)
+- `apps/infra` - AWS CDK infrastructure application
 - `packages/ui` - Shared UI components with organized structure:
   - `components/` - Reusable UI components (Button, Card, Code, etc.)
   - `pages/` - Page-level components and layouts
@@ -24,6 +27,7 @@ Conduit is a Turbo monorepo with the following structure:
 ## Development Commands
 
 ### Root Level Commands
+
 - `pnpm dev` - Start all apps in development mode
 - `pnpm build` - Build all apps and packages
 - `pnpm lint` - Lint all apps and packages
@@ -32,7 +36,9 @@ Conduit is a Turbo monorepo with the following structure:
 - `pnpm check-types` - Type check all packages
 
 ### Creating New Apps
+
 To create a new app in the monorepo:
+
 1. Create a new directory in `apps/`
 2. Initialize with appropriate framework (Next.js, etc.)
 3. Add the app to `pnpm-workspace.yaml` (should be automatic with `apps/*`)
@@ -40,7 +46,9 @@ To create a new app in the monorepo:
 5. Add build configuration to `turbo.json` if needed
 
 ### Creating New Packages
+
 To create a new shared package:
+
 1. Create a new directory in `packages/`
 2. Initialize with `package.json` including `name` field with `@conduit/` prefix
 3. Add appropriate build scripts and dependencies
@@ -64,21 +72,25 @@ const user = await client.login(credentials);
 ## Code Quality & Standards
 
 ### Linting
+
 - Run `pnpm lint` before committing
 - ESLint configuration is shared across all packages
 - Fix all linting issues before submitting PRs
 
 ### Type Checking
+
 - Run `pnpm check-types` to verify TypeScript compilation
 - All code must pass type checking
 - Use strict TypeScript configuration
 
 ### Testing
+
 - Run `pnpm test` to execute all tests
 - Write tests for new features and bug fixes
 - Maintain good test coverage
 
 ### Formatting
+
 - Use Prettier for code formatting
 - Run `pnpm format` to format all files
 - Configuration is consistent across the monorepo
@@ -86,11 +98,13 @@ const user = await client.login(credentials);
 ## Build Process
 
 ### Development
+
 - Use `pnpm dev` for local development
 - Hot reloading is enabled for all apps
 - Turborepo handles dependency caching
 
 ### Production Build
+
 - Run `pnpm build` to create production builds
 - Ensure all apps build successfully before deployment
 - Turbo handles build optimization and caching
@@ -98,8 +112,9 @@ const user = await client.login(credentials);
 ## Validation Checklist
 
 Before considering any change complete:
+
 1. ✅ Run `pnpm lint` - All linting issues resolved
-2. ✅ Run `pnpm check-types` - All type errors resolved  
+2. ✅ Run `pnpm check-types` - All type errors resolved
 3. ✅ Run `pnpm test` - All tests passing
 4. ✅ Run `pnpm build` - All packages build successfully
 5. ✅ Run `pnpm format` - Code properly formatted
@@ -131,3 +146,63 @@ The `packages/ui` package follows a structured approach:
 - Use `pnpm` as the package manager
 - Version is locked to `pnpm@9.0.0` in `package.json`
 - Use `pnpm install` to add new dependencies
+
+## API Application Architecture
+
+### Service Layer Pattern
+
+The `apps/api` application follows a service layer architecture with dependency injection:
+
+#### Directory Structure
+
+```
+apps/api/src/
+├── controllers/     # HTTP request/response handling
+├── services/        # Business logic layer
+├── repositories/    # Data access layer
+├── routes/          # Route definitions
+└── container.ts     # Dependency injection setup
+```
+
+#### Dependency Injection
+
+- Uses `tsyringe` for dependency injection container
+- All layers are registered and injected via interfaces
+- Controllers inject services, services inject repositories
+- Enables clean separation of concerns and testability
+
+#### Example Usage
+
+The API includes a hello endpoint at `/api/hello` that demonstrates:
+
+- `HelloController` handles HTTP requests
+- `HelloService` contains business logic
+- `HelloRepository` handles data access
+- Full dependency injection chain working together
+
+### API Development Commands
+
+- `cd apps/api && pnpm dev` - Start API server in development mode (port 3001)
+- `cd apps/api && pnpm build` - Build the API application
+- `cd apps/api && pnpm start` - Start built API server
+
+## Infrastructure (apps/infra)
+
+The infrastructure app uses AWS CDK to manage cloud resources:
+
+### Infrastructure Commands
+- `pnpm infra:build` - Build the CDK application
+- `pnpm infra:synth` - Synthesize CloudFormation templates
+- `pnpm infra:diff` - Show differences between deployed stack and current state
+- `pnpm infra:deploy` - Deploy infrastructure to AWS (uses devswarm-trevor profile)
+- `pnpm infra:destroy` - Destroy infrastructure from AWS (uses devswarm-trevor profile)
+
+### Infrastructure Structure
+- `apps/infra/src/constructs/` - Reusable CDK constructs
+- `apps/infra/src/stacks/` - CDK stack definitions
+- `apps/infra/src/types/` - TypeScript type definitions
+- `apps/infra/src/app.ts` - CDK app entry point
+
+### AWS Profile
+- Infrastructure deployment uses the `devswarm-trevor` AWS profile
+- Ensure this profile is configured in your AWS CLI before deploying

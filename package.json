@@ -10,7 +10,12 @@
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "clean": "turbo run clean",
-    "type-check": "turbo run check-types"
+    "type-check": "turbo run check-types",
+    "infra:build": "cd apps/infra && pnpm build",
+    "infra:synth": "cd apps/infra && pnpm synth",
+    "infra:diff": "cd apps/infra && pnpm diff",
+    "infra:deploy": "cd apps/infra && pnpm deploy",
+    "infra:destroy": "cd apps/infra && pnpm destroy"
   },
   "devDependencies": {
     "prettier": "^3.6.2",
