@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    "./*": "./src/*.tsx",
+    "./routing": "./src/routing/index.ts",
+    "./pages": "./src/pages/index.ts",
+    "./components/*": "./src/components/*",
+    "./components/Layout": "./src/components/Layout.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -21,6 +25,7 @@
   },
   "dependencies": {
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "next": "^15.5.0"
   }
 }
