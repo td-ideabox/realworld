@@ -13,6 +13,11 @@ Conduit is a Turbo monorepo with the following structure:
   - `hooks/` - Custom React hooks
   - `stores/` - Zustand store definitions
   - `routing/` - TanStack Router utilities and route definitions
+- `packages/transport` - API transport layer for communication between web/API apps:
+  - Zod schemas for request/response validation
+  - TypeScript types derived from schemas
+  - API client implementation for RealWorld API endpoints
+  - Shared interfaces for authentication, articles, profiles, comments, and tags
 - `packages/eslint-config` - ESLint configuration
 - `packages/typescript-config` - TypeScript configurations
 
@@ -40,6 +45,21 @@ To create a new shared package:
 2. Initialize with `package.json` including `name` field with `@conduit/` prefix
 3. Add appropriate build scripts and dependencies
 4. Update dependent apps to use the new package
+
+### Transport Package Usage
+The `@conduit/transport` package provides:
+- **ConduitApiClient**: Main API client class for all RealWorld endpoints
+- **Zod Schemas**: Validation schemas for all API requests and responses
+- **TypeScript Types**: Type-safe interfaces derived from Zod schemas
+- **Error Handling**: Standardized API error responses and validation
+
+Usage in apps:
+```typescript
+import { ConduitApiClient, LoginRequest, UserResponse } from '@conduit/transport';
+
+const client = new ConduitApiClient({ baseUrl: 'http://localhost:3000' });
+const user = await client.login(credentials);
+```
 
 ## Code Quality & Standards
 
