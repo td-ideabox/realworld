@@ -10,7 +10,9 @@
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "clean": "turbo run clean",
-    "type-check": "turbo run check-types"
+    "type-check": "turbo run check-types",
+    "storybook": "cd packages/ui && pnpm ladle",
+    "storybook:build": "cd packages/ui && pnpm ladle:build"
   },
   "devDependencies": {
     "prettier": "^3.6.2",
