@@ -30,6 +30,15 @@ dist
 # Ladle build outputs
 ladle-build/
 
+# CDK
+cdk.out/
+*.js
+*.d.ts
+*.d.ts.map
+
+# TypeScript compilation output
+lib/
+
 
 # Debug
 npm-debug.log*
