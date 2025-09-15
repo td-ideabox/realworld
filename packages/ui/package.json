@@ -6,6 +6,7 @@
     "./*": "./src/*.tsx",
     "./routing": "./src/routing/index.ts",
     "./pages": "./src/pages/index.ts",
+    "./hooks": "./src/hooks/index.ts",
     "./components/*": "./src/components/*",
     "./components/Layout": "./src/components/Layout.tsx"
   },

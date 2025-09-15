@@ -1,13 +1,20 @@
 'use client';
 
 import { AuthProvider as OIDCAuthProvider, AuthProviderProps } from 'react-oidc-context';
-import { getCurrentEnvironment } from '../environments';
+import { DevAuthProvider } from './DevAuthProvider';
+import { getCurrentEnvironment, isDevAuthMode } from '../environments';
 
 interface Props {
   children: React.ReactNode;
 }
 
 export function AuthProvider({ children }: Props) {
+  // Use dev auth in development mode unless forced to use Cognito
+  if (isDevAuthMode()) {
+    return <DevAuthProvider>{children}</DevAuthProvider>;
+  }
+
+  // Use Cognito in production or when explicitly forced
   const env = getCurrentEnvironment();
 
   const oidcConfig: AuthProviderProps = {

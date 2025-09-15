@@ -3,3 +3,4 @@ export * from './useApi';
 export { useAuthSync } from './useAuthSync';
 export * from "./useAuthToken";
 export { useAuthGuard } from './useAuthGuard';
+export { useDevAuth, type DevAuthUser } from './useDevAuth';

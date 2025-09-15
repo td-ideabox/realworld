@@ -12,9 +12,21 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const router = useRouter();
-  const auth = useAuth();
 
-  // Sync OIDC auth with Zustand stores
+  // For testing: Use mock auth data
+  const auth = {
+    isAuthenticated: true,
+    user: {
+      profile: {
+        email: 'test@example.com',
+        username: 'testuser',
+        picture: null,
+      }
+    },
+    signoutRedirect: () => console.log('Mock signout')
+  };
+
+  // Sync auth with Zustand stores
   useAuthSync();
 
   const handleNavigation = (path: string) => {

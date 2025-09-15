@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "react-oidc-context";
 import { useEffect, useState } from "react";
-import { getCurrentEnvironment } from "../../../../apps/web/app/environments";
+import { getCurrentEnvironment, isDevAuthMode } from "../../../../apps/web/app/environments";
+import { DevAuthForm } from "../components/dev-auth-form";
 
 export function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const env = getCurrentEnvironment();
   const [useHostedUI, setUseHostedUI] = useState(true);
+  const isDevMode = isDevAuthMode();
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -63,25 +65,39 @@ export function LoginPage() {
               </a>
             </p>
 
-            <div className="text-xs-center">
-              <button
-                className="btn btn-lg btn-primary"
-                onClick={handleSignInWithCognito}
-                style={{ width: '100%', marginBottom: '1rem' }}
-              >
-                Sign in with Conduit
-              </button>
-
-              <p>
+            {isDevMode ? (
+              <DevAuthForm
+                onLogin={async (email, username) => {
+                  // Type assertion to access devLogin method
+                  const devAuth = auth as any;
+                  if (devAuth.devLogin) {
+                    await devAuth.devLogin(email, username);
+                    router.replace('/');
+                  }
+                }}
+                isLoading={auth.isLoading}
+              />
+            ) : (
+              <div className="text-xs-center">
                 <button
-                  className="btn btn-outline-secondary"
-                  onClick={handleForgotPassword}
-                  style={{ background: 'transparent', border: 'none', textDecoration: 'underline', color: '#5cb85c' }}
+                  className="btn btn-lg btn-primary"
+                  onClick={handleSignInWithCognito}
+                  style={{ width: '100%', marginBottom: '1rem' }}
                 >
-                  Forgot your password?
+                  Sign in with Conduit
                 </button>
-              </p>
-            </div>
+
+                <p>
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={handleForgotPassword}
+                    style={{ background: 'transparent', border: 'none', textDecoration: 'underline', color: '#5cb85c' }}
+                  >
+                    Forgot your password?
+                  </button>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
