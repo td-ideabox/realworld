@@ -6,6 +6,7 @@ interface ArticleProps {
   }>;
 }
 
-export default function Article({ params }: ArticleProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function Article({ params: _ }: ArticleProps) {
   return <ArticlePage />;
 }
