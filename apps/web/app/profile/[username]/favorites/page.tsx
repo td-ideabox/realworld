@@ -6,6 +6,7 @@ interface ProfileFavoritesProps {
   }>;
 }
 
-export default function ProfileFavorites({ params }: ProfileFavoritesProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function ProfileFavorites({ params: _ }: ProfileFavoritesProps) {
   return <ProfilePage />;
 }

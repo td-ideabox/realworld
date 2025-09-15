@@ -1,86 +1,78 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Banner } from "../components/banner";
+import { FeedToggle } from "../components/feed-toggle";
+import { ArticlePreview } from "../components/article-preview";
+import { TagList } from "../components/tag-list";
 
 export function HomePage() {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"global" | "personal">("global");
+
+  const sampleArticle = {
+    slug: "how-to-build-webapps-that-scale",
+    title: "How to build webapps that scale",
+    description: "This is the description for the post.",
+    tagList: ["react", "javascript", "webdev"],
+    createdAt: "2023-01-20T00:00:00.000Z",
+    favorited: false,
+    favoritesCount: 29,
+    author: {
+      username: "eric-simons",
+      image: "http://i.imgur.com/Qr71crq.jpg"
+    }
+  };
+
+  const popularTags = [
+    "programming",
+    "javascript",
+    "emberjs",
+    "angularjs",
+    "react",
+    "mean",
+    "node",
+    "rails"
+  ];
+
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <div className="home-page">
-      <div className="banner">
-        <div className="container">
-          <h1 className="logo-font">conduit</h1>
-          <p>A place to share your knowledge.</p>
-        </div>
-      </div>
+      <Banner />
 
       <div className="container page">
         <div className="row">
           <div className="col-md-9">
-            <div className="feed-toggle">
-              <ul className="nav nav-pills outline-active">
-                <li className="nav-item">
-                  <a className="nav-link" href="">
-                    Your Feed
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link active" href="">
-                    Global Feed
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <FeedToggle
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              showPersonalFeed={false}
+            />
 
-            <div className="article-preview">
-              <div className="article-meta">
-                <Link href="/profile/eric-simons">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" />
-                </Link>
-                <div className="info">
-                  <Link href="/profile/eric-simons" className="author">
-                    Eric Simons
-                  </Link>
-                  <span className="date">January 20th</span>
-                </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart"></i> 29
-                </button>
-              </div>
-              <Link href="/article/how-to-build-webapps-that-scale" className="preview-link">
-                <h1>How to build webapps that scale</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-              </Link>
-            </div>
+            <ArticlePreview
+              article={sampleArticle}
+              onAuthorClick={(username) => handleNavigation(`/profile/${username}`)}
+              onArticleClick={(slug) => handleNavigation(`/article/${slug}`)}
+              onFavoriteClick={(slug, favorited) => {
+                console.log("Favorite clicked:", slug, favorited);
+              }}
+              onTagClick={(tag) => {
+                console.log("Tag clicked:", tag);
+              }}
+            />
           </div>
 
           <div className="col-md-3">
-            <div className="sidebar">
-              <p>Popular Tags</p>
-              <div className="tag-list">
-                <a href="" className="tag-pill tag-default">
-                  programming
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  javascript
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  emberjs
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  angularjs
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  react
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  mean
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  node
-                </a>
-                <a href="" className="tag-pill tag-default">
-                  rails
-                </a>
-              </div>
-            </div>
+            <TagList
+              tags={popularTags}
+              onTagClick={(tag) => {
+                console.log("Tag clicked:", tag);
+              }}
+            />
           </div>
         </div>
       </div>

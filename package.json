@@ -11,6 +11,8 @@
     "test:watch": "turbo run test:watch",
     "clean": "turbo run clean",
     "type-check": "turbo run check-types",
+    "ladle": "cd packages/ui && pnpm ladle",
+    "ladle:build": "cd packages/ui && pnpm ladle:build",
     "infra:build": "cd apps/infra && pnpm build",
     "infra:synth": "cd apps/infra && pnpm synth",
     "infra:diff": "cd apps/infra && pnpm diff",
