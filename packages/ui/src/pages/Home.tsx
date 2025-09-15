@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "react-oidc-context";
 import { Banner } from "../components/banner";
 import { FeedToggle } from "../components/feed-toggle";
 import { ArticlePreview } from "../components/article-preview";
@@ -9,6 +10,18 @@ import { TagList } from "../components/tag-list";
 
 export function HomePage() {
   const router = useRouter();
+
+  // For testing: Force authenticated state
+  const auth = {
+    isAuthenticated: true,
+    user: {
+      profile: {
+        email: 'test@example.com',
+        username: 'testuser',
+      }
+    }
+  };
+
   const [activeTab, setActiveTab] = useState<"global" | "personal">("global");
 
   const sampleArticle = {
@@ -50,7 +63,7 @@ export function HomePage() {
             <FeedToggle
               activeTab={activeTab}
               onTabChange={setActiveTab}
-              showPersonalFeed={false}
+              showPersonalFeed={auth.isAuthenticated}
             />
 
             <ArticlePreview
