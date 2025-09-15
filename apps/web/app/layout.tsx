@@ -26,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* eslint-disable-next-line @next/next/no-css-tags */}
         <link rel="stylesheet" href="//demo.productionready.io/main.css" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

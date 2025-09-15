@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from "next/link";
-import { useAuth } from "react-oidc-context";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "react-oidc-context";
+import { useEffect, useState } from "react";
 import { getCurrentEnvironment } from "../../../../apps/web/app/environments";
 
 export function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const env = getCurrentEnvironment();
+  const [useHostedUI, setUseHostedUI] = useState(true);
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -17,7 +17,7 @@ export function LoginPage() {
     }
   }, [auth.isAuthenticated, router]);
 
-  const handleSignIn = () => {
+  const handleSignInWithCognito = () => {
     const loginUrl = `${env.COGNITO_DOMAIN}/login?client_id=${env.COGNITO_CLIENT_ID}&response_type=code&scope=email+openid+profile&redirect_uri=${encodeURIComponent(env.REDIRECT_URI)}`;
     window.location.href = loginUrl;
   };
@@ -25,6 +25,10 @@ export function LoginPage() {
   const handleForgotPassword = () => {
     const forgotPasswordUrl = `${env.COGNITO_DOMAIN}/forgotPassword?client_id=${env.COGNITO_CLIENT_ID}&response_type=code&scope=email+openid+profile&redirect_uri=${encodeURIComponent(env.REDIRECT_URI)}`;
     window.location.href = forgotPasswordUrl;
+  };
+
+  const handleRegisterClick = () => {
+    router.push("/register");
   };
 
   if (auth.isLoading) {
@@ -48,13 +52,21 @@ export function LoginPage() {
           <div className="col-md-6 offset-md-3 col-xs-12">
             <h1 className="text-xs-center">Sign in</h1>
             <p className="text-xs-center">
-              <Link href="/register">Need an account?</Link>
+              <a
+                href="/register"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRegisterClick();
+                }}
+              >
+                Need an account?
+              </a>
             </p>
 
             <div className="text-xs-center">
               <button
                 className="btn btn-lg btn-primary"
-                onClick={handleSignIn}
+                onClick={handleSignInWithCognito}
                 style={{ width: '100%', marginBottom: '1rem' }}
               >
                 Sign in with Conduit
