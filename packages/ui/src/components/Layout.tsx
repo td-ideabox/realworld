@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "react-oidc-context";
 import { Header } from "./header";
 import { Footer } from "./footer";
+import { useAuthSync } from "../hooks/useAuthSync";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,9 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const auth = useAuth();
+
+  // Sync OIDC auth with Zustand stores
+  useAuthSync();
 
   const handleNavigation = (path: string) => {
     router.push(path);

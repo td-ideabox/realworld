@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ConduitApiClient, User, LoginRequest, RegisterRequest, UpdateUserRequest } from '@conduit/transport';
+import { ConduitApiClient, User, UpdateUserRequest } from '@conduit/transport';
+import { getStoredToken, getStoredUser } from '../hooks/useAuthToken';
 
 interface AuthState {
   user: User | null;
@@ -8,7 +9,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  // OIDC/Cognito compatibility fields - will be used when merging with Cognito branch
+  // OIDC/Cognito fields - now actively used
   oidcUser?: any;
   cognitoTokens?: {
     idToken?: string;
@@ -18,23 +19,25 @@ interface AuthState {
 }
 
 interface AuthActions {
-  // Core auth state management (will be compatible with OIDC)
-  setUser: (user: User) => void;
-  setToken: (token: string) => void;
+  // Core auth state management
+  setUser: (user: User | null) => void;
+  setToken: (token: string | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   clearAuth: () => void;
   logout: () => void;
 
-  // Conduit API specific methods (may be replaced/augmented with OIDC)
-  login: (client: ConduitApiClient, credentials: LoginRequest) => Promise<void>;
-  register: (client: ConduitApiClient, userData: RegisterRequest) => Promise<void>;
+  // API integration methods
   getCurrentUser: (client: ConduitApiClient) => Promise<void>;
   updateUser: (client: ConduitApiClient, userData: UpdateUserRequest) => Promise<void>;
 
-  // Future OIDC/Cognito methods (stubbed for merge compatibility)
-  setCognitoTokens?: (tokens: any) => void;
-  setOidcUser?: (oidcUser: any) => void;
+  // OIDC/Cognito integration methods
+  setCognitoTokens: (tokens: any) => void;
+  setOidcUser: (oidcUser: any) => void;
+  syncWithOIDC: () => void;
+
+  // Initialize auth state from localStorage
+  initializeAuth: () => void;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -47,15 +50,15 @@ export const useAuthStore = create<AuthStore>()(
       isAuthenticated: false,
       isLoading: false,
       error: null,
-      // OIDC/Cognito fields initialized as undefined
+      // OIDC/Cognito fields
       oidcUser: undefined,
       cognitoTokens: undefined,
 
-      setUser: (user: User) => {
-        set({ user, isAuthenticated: true });
+      setUser: (user: User | null) => {
+        set({ user, isAuthenticated: !!user });
       },
 
-      setToken: (token: string) => {
+      setToken: (token: string | null) => {
         set({ token });
       },
 
@@ -68,50 +71,48 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       clearAuth: () => {
-        set({ user: null, token: null, isAuthenticated: false, error: null });
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+          error: null,
+          oidcUser: undefined,
+          cognitoTokens: undefined
+        });
       },
 
-      login: async (client: ConduitApiClient, credentials: LoginRequest) => {
-        try {
-          set({ isLoading: true, error: null });
-          const response = await client.login(credentials);
-          const { user } = response;
+      initializeAuth: () => {
+        const storedToken = getStoredToken();
+        const storedUser = getStoredUser();
 
+        if (storedToken && storedUser) {
           set({
-            user,
-            token: user.token,
-            isAuthenticated: true,
-            isLoading: false
+            token: storedToken,
+            user: storedUser,
+            isAuthenticated: true
           });
-        } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Login failed',
-            isLoading: false
-          });
-          throw error;
         }
       },
 
-      register: async (client: ConduitApiClient, userData: RegisterRequest) => {
-        try {
-          set({ isLoading: true, error: null });
-          const response = await client.register(userData);
-          const { user } = response;
+      syncWithOIDC: () => {
+        const storedToken = getStoredToken();
+        const storedUser = getStoredUser();
 
-          set({
-            user,
-            token: user.token,
-            isAuthenticated: true,
-            isLoading: false
-          });
-        } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Registration failed',
-            isLoading: false
-          });
-          throw error;
-        }
+        set({
+          token: storedToken,
+          user: storedUser,
+          isAuthenticated: !!storedToken
+        });
       },
+
+      setCognitoTokens: (tokens: any) => {
+        set({ cognitoTokens: tokens });
+      },
+
+      setOidcUser: (oidcUser: any) => {
+        set({ oidcUser });
+      },
+
 
       getCurrentUser: async (client: ConduitApiClient) => {
         try {
@@ -158,19 +159,9 @@ export const useAuthStore = create<AuthStore>()(
           token: null,
           isAuthenticated: false,
           error: null,
-          // Clear OIDC/Cognito fields on logout
           oidcUser: undefined,
           cognitoTokens: undefined
         });
-      },
-
-      // Stubbed OIDC/Cognito methods for future merge compatibility
-      setCognitoTokens: (tokens: any) => {
-        set({ cognitoTokens: tokens });
-      },
-
-      setOidcUser: (oidcUser: any) => {
-        set({ oidcUser });
       }
     }),
     {

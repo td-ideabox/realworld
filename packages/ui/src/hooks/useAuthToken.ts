@@ -55,7 +55,7 @@ export const clearStoredAuth = (): void => {
   localStorage.removeItem('user');
 };
 
-// Function to get authorization headers for API calls
+// Function to get authorization headers for API calls (Cognito Bearer format)
 export const getAuthHeaders = (): Record<string, string> => {
   const token = getStoredToken();
   if (token) {

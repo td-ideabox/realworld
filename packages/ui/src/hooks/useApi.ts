@@ -8,8 +8,6 @@ import {
   useTagStore
 } from '../stores';
 import {
-  LoginRequest,
-  RegisterRequest,
   UpdateUserRequest,
   CreateArticleRequest,
   UpdateArticleRequest,
@@ -17,35 +15,23 @@ import {
   ArticleQuery,
   FeedQuery
 } from '@conduit/transport';
+import { useAuthToken } from './useAuthToken';
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const { getClient } = useApiClientStore();
   const authStore = useAuthStore();
   const {
-    login: loginStore,
-    register: registerStore,
-    logout: logoutStore,
     getCurrentUser: getCurrentUserStore,
     updateUser: updateUserStore,
-    // Access OIDC fields for future compatibility
+    clearAuth,
+    // OIDC fields now actively used
     oidcUser,
     cognitoTokens
   } = authStore;
 
-  const loginMutation = useMutation({
-    mutationFn: (credentials: LoginRequest) => loginStore(getClient(), credentials),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-    },
-  });
-
-  const registerMutation = useMutation({
-    mutationFn: (userData: RegisterRequest) => registerStore(getClient(), userData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-    },
-  });
+  // Get OIDC auth functions
+  const { login: oidcLogin, logout: oidcLogout } = useAuthToken();
 
   const getCurrentUserQuery = useQuery({
     queryKey: ['user'],
@@ -62,21 +48,21 @@ export const useAuth = () => {
   });
 
   const logout = () => {
-    logoutStore();
+    clearAuth();
+    oidcLogout();
     queryClient.clear();
   };
 
   return {
-    // Current Conduit auth methods
-    login: loginMutation,
-    register: registerMutation,
+    // OIDC auth methods
+    login: oidcLogin,
+    logout,
     getCurrentUser: getCurrentUserQuery,
     updateUser: updateUserMutation,
-    logout,
-    // Expose OIDC fields for future merge compatibility
+    // Expose OIDC fields
     oidcUser,
     cognitoTokens,
-    // Direct access to auth store for OIDC integration
+    // Direct access to auth store
     authStore,
   };
 };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Layout } from "@repo/ui/components/Layout";
 import { AuthProvider } from "./auth/AuthProvider";
+import { QueryProvider } from "./providers/QueryProvider";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -30,9 +31,11 @@ export default function RootLayout({
         <link rel="stylesheet" href="//demo.productionready.io/main.css" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AuthProvider>
-          <Layout>{children}</Layout>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <Layout>{children}</Layout>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

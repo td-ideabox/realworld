@@ -58,7 +58,7 @@ export class ConduitApiClient {
   private getHeaders(): Record<string, string> {
     const headers = { ...this.defaultHeaders };
     if (this.token) {
-      headers.Authorization = `Token ${this.token}`;
+      headers.Authorization = `Bearer ${this.token}`;
     }
     return headers;
   }
