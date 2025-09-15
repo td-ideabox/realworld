@@ -32,6 +32,7 @@
     "next": "^15.5.0",
     "@conduit/transport": "workspace:*",
     "@tanstack/react-query": "^5.87.4",
+    "react-oidc-context": "^3.3.0",
     "zustand": "^5.0.8"
   }
 }

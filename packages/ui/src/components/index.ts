@@ -3,6 +3,7 @@ export * from "./button";
 export * from "./card";
 export * from "./code";
 export * from "./Layout";
+export * from "./ProtectedRoute";
 export * from './head';
 export * from './header';
 export * from './footer';

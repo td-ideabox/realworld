@@ -13,6 +13,7 @@ interface HeaderProps {
   onNewArticleClick?: () => void;
   onSettingsClick?: () => void;
   onProfileClick?: () => void;
+  onSignOutClick?: () => void;
 }
 
 export const Header = ({
@@ -22,7 +23,8 @@ export const Header = ({
   onRegisterClick,
   onNewArticleClick,
   onSettingsClick,
-  onProfileClick
+  onProfileClick,
+  onSignOutClick
 }: HeaderProps) => {
   return (
     <nav className="navbar navbar-light">
@@ -89,6 +91,18 @@ export const Header = ({
                     <img src={user.image} className="user-pic" alt={user.username} />
                   )}
                   {user.username}
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSignOutClick?.();
+                  }}
+                >
+                  Sign out
                 </a>
               </li>
             </>
