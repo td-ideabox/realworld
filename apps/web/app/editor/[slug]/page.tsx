@@ -6,6 +6,7 @@ interface EditArticleProps {
   }>;
 }
 
-export default function EditArticle({ params }: EditArticleProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function EditArticle({ params: _ }: EditArticleProps) {
   return <EditorPage />;
 }

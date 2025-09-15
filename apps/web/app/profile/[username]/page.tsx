@@ -6,6 +6,7 @@ interface ProfileProps {
   }>;
 }
 
-export default function Profile({ params }: ProfileProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function Profile({ params: _ }: ProfileProps) {
   return <ProfilePage />;
 }

@@ -1,38 +1,26 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { LoginForm } from "../components/login-form";
 
 export function LoginPage() {
-  return (
-    <div className="auth-page">
-      <div className="container page">
-        <div className="row">
-          <div className="col-md-6 offset-md-3 col-xs-12">
-            <h1 className="text-xs-center">Sign in</h1>
-            <p className="text-xs-center">
-              <Link href="/register">Need an account?</Link>
-            </p>
+  const router = useRouter();
 
-            <form>
-              <fieldset className="form-group">
-                <input
-                  className="form-control form-control-lg"
-                  type="text"
-                  placeholder="Email"
-                />
-              </fieldset>
-              <fieldset className="form-group">
-                <input
-                  className="form-control form-control-lg"
-                  type="password"
-                  placeholder="Password"
-                />
-              </fieldset>
-              <button className="btn btn-lg btn-primary pull-xs-right">
-                Sign in
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+  const handleLogin = async (email: string, password: string) => {
+    console.log("Login attempt:", { email, password });
+    // TODO: Integrate with actual authentication logic
+    // For now, just simulate a successful login
+    router.push("/");
+  };
+
+  const handleRegisterClick = () => {
+    router.push("/register");
+  };
+
+  return (
+    <LoginForm
+      onSubmit={handleLogin}
+      onRegisterClick={handleRegisterClick}
+    />
   );
 }
