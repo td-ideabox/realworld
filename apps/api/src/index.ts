@@ -1,14 +1,15 @@
 import "./container.js";
-import express from "express";
-import { helloRoutes } from "./routes/hello.routes.js";
+import { container } from "./container.js";
+import { Application } from "./Application.js";
 
-const app = express();
-const PORT = process.env.API_PORT || 3000;
+async function main() {
+  try {
+    const app = container.resolve<Application>("Application");
+    await app.start();
+  } catch (error) {
+    console.error("Failed to start application:", error);
+    process.exit(1);
+  }
+}
 
-app.use(express.json());
-
-app.use("/api", helloRoutes);
-
-app.listen(PORT, () => {
-  console.log(`API server running on port ${PORT}`);
-});
+main();
