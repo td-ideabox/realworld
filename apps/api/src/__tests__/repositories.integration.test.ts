@@ -209,8 +209,8 @@ describe('Repository Integration Tests', () => {
       // Test finding by article
       const articleComments = await commentRepository.findByArticleId(article.id);
       expect(articleComments).toHaveLength(1);
-      expect(articleComments[0].body).toBe(commentData.body);
-      expect(articleComments[0].author.username).toBe(user.username);
+      expect(articleComments[0]!.body).toBe(commentData.body);
+      expect(articleComments[0]!.author.username).toBe(user.username);
     });
   });
 
@@ -366,7 +366,7 @@ describe('Repository Integration Tests', () => {
 
       const comments = await commentRepository.findByArticleId(article.id);
       expect(comments).toHaveLength(1);
-      expect(comments[0].author.username).toBe('reader');
+      expect(comments[0]!.author.username).toBe('reader');
     });
   });
 });
