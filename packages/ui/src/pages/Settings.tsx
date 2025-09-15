@@ -1,4 +1,24 @@
+'use client';
+
+import { useAuthGuard } from '../hooks/useAuthGuard';
+
 export function SettingsPage() {
+  const { isLoading } = useAuthGuard();
+
+  if (isLoading) {
+    return (
+      <div className="settings-page">
+        <div className="container page">
+          <div className="row">
+            <div className="col-md-6 offset-md-3 col-xs-12 text-center">
+              <h2>Loading...</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="settings-page">
       <div className="container page">

@@ -1,4 +1,24 @@
+'use client';
+
+import { useAuthGuard } from '../hooks/useAuthGuard';
+
 export function EditorPage() {
+  const { isLoading } = useAuthGuard();
+
+  if (isLoading) {
+    return (
+      <div className="editor-page">
+        <div className="container page">
+          <div className="row">
+            <div className="col-md-10 offset-md-1 col-xs-12 text-center">
+              <h2>Loading...</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="editor-page">
       <div className="container page">
