@@ -1,7 +1,7 @@
 import { singleton, inject } from "tsyringe";
 import { eq, and } from "@conduit/data";
 import { Follow, NewFollow, follows, users } from "@conduit/data";
-import { IDatabaseService } from "../services/database.service.js";
+import type { IDatabaseService } from "../services/database.service.js";
 
 export interface IFollowRepository {
   findById(id: number): Promise<Follow | null>;
@@ -9,7 +9,9 @@ export interface IFollowRepository {
   findFollowersByUserId(userId: number): Promise<Follow[]>;
   findFollowingByUserId(userId: number): Promise<Follow[]>;
   create(followData: NewFollow): Promise<Follow>;
+  createFollow(followerId: number, followingId: number): Promise<Follow>;
   delete(id: number): Promise<boolean>;
+  deleteFollow(followerId: number, followingId: number): Promise<boolean>;
   deleteByFollowerAndFollowing(followerId: number, followingId: number): Promise<boolean>;
   isFollowing(followerId: number, followingId: number): Promise<boolean>;
   getFollowersCount(userId: number): Promise<number>;
@@ -80,6 +82,14 @@ export class FollowRepository implements IFollowRepository {
   async getFollowersCount(userId: number): Promise<number> {
     const followers = await this.findFollowersByUserId(userId);
     return followers.length;
+  }
+
+  async createFollow(followerId: number, followingId: number): Promise<Follow> {
+    return this.create({ followerId, followingId });
+  }
+
+  async deleteFollow(followerId: number, followingId: number): Promise<boolean> {
+    return this.deleteByFollowerAndFollowing(followerId, followingId);
   }
 
   async getFollowingCount(userId: number): Promise<number> {

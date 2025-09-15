@@ -1,7 +1,7 @@
 import { singleton, inject } from "tsyringe";
 import { eq, and, or, like, desc, count } from "@conduit/data";
 import { Article, NewArticle, ArticleWithAuthor, articles, users, tags, articleTags, favorites } from "@conduit/data";
-import { IDatabaseService } from "../services/database.service.js";
+import type { IDatabaseService } from "../services/database.service.js";
 
 export interface ArticleFilters {
   tag?: string;
@@ -141,16 +141,15 @@ export class ArticleRepository implements IArticleRepository {
         }
       })
       .from(articles)
-      .innerJoin(users, eq(articles.authorId, users.id))
+      .innerJoin(users, eq(articles.authorId, users.id));
+
+    const results = await (filters.author
+      ? query.where(eq(users.username, filters.author))
+      : query)
       .orderBy(desc(articles.createdAt))
       .limit(limit)
-      .offset(offset);
-
-    if (filters.author) {
-      query = query.where(eq(users.username, filters.author));
-    }
-
-    const results = await query.all();
+      .offset(offset)
+      .all();
 
     // Get tags for all articles
     const articlesWithTags = await Promise.all(
@@ -212,16 +211,14 @@ export class ArticleRepository implements IArticleRepository {
   async getArticleCount(filters: Omit<ArticleFilters, 'limit' | 'offset'>): Promise<number> {
     const db = this.databaseService.getDatabase();
 
-    let query = db
+    let baseQuery = db
       .select({ count: count() })
       .from(articles)
       .innerJoin(users, eq(articles.authorId, users.id));
 
-    if (filters.author) {
-      query = query.where(eq(users.username, filters.author));
-    }
-
-    const result = await query.get();
+    const result = await (filters.author
+      ? baseQuery.where(eq(users.username, filters.author))
+      : baseQuery).get();
     return result?.count || 0;
   }
 }

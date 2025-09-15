@@ -1,7 +1,7 @@
 import { singleton, inject } from "tsyringe";
 import { eq, and, desc } from "@conduit/data";
 import { Comment, NewComment, CommentWithAuthor, comments, users } from "@conduit/data";
-import { IDatabaseService } from "../services/database.service.js";
+import type { IDatabaseService } from "../services/database.service.js";
 
 export interface ICommentRepository {
   findById(id: number): Promise<Comment | null>;

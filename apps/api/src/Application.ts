@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import { injectable, inject } from "tsyringe";
-import { IDatabaseService } from "./services/database.service.js";
-import { IRouterService } from "./services/router.service.js";
+import type { IDatabaseService } from "./services/database.service.js";
+import type { IRouterService } from "./services/router.service.js";
 
 @injectable()
 export class Application {

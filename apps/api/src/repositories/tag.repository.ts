@@ -1,7 +1,7 @@
 import { singleton, inject } from "tsyringe";
-import { eq, and, inArray } from "@conduit/data";
+import { eq, and } from "@conduit/data";
 import { Tag, NewTag, tags, articleTags } from "@conduit/data";
-import { IDatabaseService } from "../services/database.service.js";
+import type { IDatabaseService } from "../services/database.service.js";
 
 export interface ITagRepository {
   findById(id: number): Promise<Tag | null>;
@@ -12,6 +12,7 @@ export interface ITagRepository {
   findOrCreate(name: string): Promise<Tag>;
   findOrCreateMany(names: string[]): Promise<Tag[]>;
   addToArticle(tagId: number, articleId: number): Promise<void>;
+  addTagsToArticle(articleId: number, tagNames: string[]): Promise<void>;
   removeFromArticle(tagId: number, articleId: number): Promise<void>;
   removeAllFromArticle(articleId: number): Promise<void>;
   getMostPopular(limit?: number): Promise<Tag[]>;
@@ -104,6 +105,16 @@ export class TagRepository implements ITagRepository {
     await db
       .delete(articleTags)
       .where(and(eq(articleTags.tagId, tagId), eq(articleTags.articleId, articleId)));
+  }
+
+  async addTagsToArticle(articleId: number, tagNames: string[]): Promise<void> {
+    if (tagNames.length === 0) return;
+
+    const tags = await this.findOrCreateMany(tagNames);
+
+    for (const tag of tags) {
+      await this.addToArticle(tag.id, articleId);
+    }
   }
 
   async removeAllFromArticle(articleId: number): Promise<void> {

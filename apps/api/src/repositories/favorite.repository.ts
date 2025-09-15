@@ -1,7 +1,7 @@
 import { singleton, inject } from "tsyringe";
 import { eq, and } from "@conduit/data";
 import { Favorite, NewFavorite, favorites } from "@conduit/data";
-import { IDatabaseService } from "../services/database.service.js";
+import type { IDatabaseService } from "../services/database.service.js";
 
 export interface IFavoriteRepository {
   findById(id: number): Promise<Favorite | null>;
