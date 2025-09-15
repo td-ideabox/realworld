@@ -45,7 +45,7 @@ export function Layout({ children }: LayoutProps) {
     if (auth.isAuthenticated && auth.user?.profile) {
       return {
         username: getUsername(),
-        image: auth.user.profile.picture,
+        image: auth.user.profile.picture || undefined,
       };
     }
     return null;
