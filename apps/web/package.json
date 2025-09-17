@@ -11,6 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@conduit/transport": "workspace:*",
     "@repo/ui": "workspace:*",
     "@tanstack/react-query": "^5.87.4",
     "@tanstack/react-router": "^1.131.41",

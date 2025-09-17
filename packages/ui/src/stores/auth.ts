@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ConduitApiClient, User, UpdateUserRequest } from '@conduit/transport';
+import { ConduitApiClient, User, UpdateUserRequest, LoginRequest, RegisterRequest } from '@conduit/transport';
 import { getStoredToken, getStoredUser } from '../hooks/useAuthToken';
 
 interface AuthState {
@@ -28,6 +28,8 @@ interface AuthActions {
   logout: () => void;
 
   // API integration methods
+  login: (client: ConduitApiClient, credentials: LoginRequest) => Promise<void>;
+  register: (client: ConduitApiClient, userData: RegisterRequest) => Promise<void>;
   getCurrentUser: (client: ConduitApiClient) => Promise<void>;
   updateUser: (client: ConduitApiClient, userData: UpdateUserRequest) => Promise<void>;
 
@@ -113,6 +115,47 @@ export const useAuthStore = create<AuthStore>()(
         set({ oidcUser });
       },
 
+      login: async (client: ConduitApiClient, credentials: LoginRequest) => {
+        try {
+          set({ isLoading: true, error: null });
+          const response = await client.login(credentials);
+          const { user } = response;
+
+          set({
+            user,
+            token: user.token,
+            isAuthenticated: true,
+            isLoading: false
+          });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : 'Failed to login',
+            isLoading: false
+          });
+          throw error;
+        }
+      },
+
+      register: async (client: ConduitApiClient, userData: RegisterRequest) => {
+        try {
+          set({ isLoading: true, error: null });
+          const response = await client.register(userData);
+          const { user } = response;
+
+          set({
+            user,
+            token: user.token,
+            isAuthenticated: true,
+            isLoading: false
+          });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : 'Failed to register',
+            isLoading: false
+          });
+          throw error;
+        }
+      },
 
       getCurrentUser: async (client: ConduitApiClient) => {
         try {

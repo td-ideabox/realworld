@@ -8,6 +8,7 @@ interface ApiClientState {
 interface ApiClientActions {
   setToken: (token: string | null) => void;
   getClient: () => ConduitApiClient;
+  initializeClient: () => void;
 }
 
 type ApiClientStore = ApiClientState & ApiClientActions;
@@ -30,5 +31,20 @@ export const useApiClientStore = create<ApiClientStore>((set, get) => ({
 
   getClient: () => {
     return get().client;
+  },
+
+  initializeClient: () => {
+    const stored = localStorage.getItem('conduit-auth');
+    if (stored) {
+      try {
+        const authData = JSON.parse(stored);
+        if (authData.state?.token) {
+          const { client } = get();
+          client.setToken(authData.state.token);
+        }
+      } catch (error) {
+        console.warn('Failed to initialize API client with stored token:', error);
+      }
+    }
   }
 }));
