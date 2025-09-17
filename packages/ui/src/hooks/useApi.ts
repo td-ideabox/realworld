@@ -13,7 +13,9 @@ import {
   UpdateArticleRequest,
   CreateCommentRequest,
   ArticleQuery,
-  FeedQuery
+  FeedQuery,
+  LoginRequest,
+  RegisterRequest
 } from '@conduit/transport';
 import { useAuthToken } from './useAuthToken';
 
@@ -22,6 +24,8 @@ export const useAuth = () => {
   const { getClient } = useApiClientStore();
   const authStore = useAuthStore();
   const {
+    login: loginStore,
+    register: registerStore,
     getCurrentUser: getCurrentUserStore,
     updateUser: updateUserStore,
     clearAuth,
@@ -40,6 +44,20 @@ export const useAuth = () => {
     enabled: !!(useAuthStore.getState().token || useAuthStore.getState().cognitoTokens?.accessToken),
   });
 
+  const loginMutation = useMutation({
+    mutationFn: (credentials: LoginRequest) => loginStore(getClient(), credentials),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: (userData: RegisterRequest) => registerStore(getClient(), userData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+  });
+
   const updateUserMutation = useMutation({
     mutationFn: (userData: UpdateUserRequest) => updateUserStore(getClient(), userData),
     onSuccess: () => {
@@ -54,8 +72,11 @@ export const useAuth = () => {
   };
 
   return {
-    // OIDC auth methods
-    login: oidcLogin,
+    // RealWorld API auth methods
+    login: loginMutation,
+    register: registerMutation,
+    // OIDC auth methods (for backward compatibility)
+    oidcLogin,
     logout,
     getCurrentUser: getCurrentUserQuery,
     updateUser: updateUserMutation,
