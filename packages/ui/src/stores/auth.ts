@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { ConduitApiClient, User, UpdateUserRequest, LoginRequest, RegisterRequest } from '@conduit/transport';
 import { getStoredToken, getStoredUser } from '../hooks/useAuthToken';
 
-interface AuthState {
+export interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
@@ -18,7 +18,7 @@ interface AuthState {
   };
 }
 
-interface AuthActions {
+export interface AuthActions {
   // Core auth state management
   setUser: (user: User | null) => void;
   setToken: (token: string | null) => void;
@@ -42,7 +42,7 @@ interface AuthActions {
   initializeAuth: () => void;
 }
 
-type AuthStore = AuthState & AuthActions;
+export type AuthStore = AuthState & AuthActions;
 
 export const useAuthStore = create<AuthStore>()(
   persist(
