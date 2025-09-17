@@ -478,6 +478,7 @@ describe('ConduitApiClient', () => {
         tag: 'test tag with spaces',
         author: 'user@example.com',
         limit: 10,
+        offset: 0,
       };
 
       await client.getArticles(query);
@@ -500,6 +501,7 @@ describe('ConduitApiClient', () => {
         tag: 'test',
         author: undefined,
         limit: 10,
+        offset: 0,
       };
 
       await client.getArticles(query);
