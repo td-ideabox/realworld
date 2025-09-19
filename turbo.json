@@ -26,7 +26,25 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["WEB_PORT", "DOC_PORT", "API_PORT"]
+      "env": [
+        "WEB_PORT",
+        "DOC_PORT",
+        "API_PORT",
+        "DD_SERVICE",
+        "DD_ENV",
+        "DD_VERSION",
+        "DD_AGENT_HOST",
+        "DD_TRACE_AGENT_PORT",
+        "DD_LOGS_INJECTION",
+        "DD_RUNTIME_METRICS_ENABLED",
+        "DD_PROFILING_ENABLED",
+        "DD_TRACE_ANALYTICS_ENABLED",
+        "NODE_ENV",
+        "AWS_REGION",
+        "COGNITO_USER_POOL_ID",
+        "COGNITO_CLIENT_ID",
+        "COGNITO_CLIENT_SECRET"
+      ]
     }
   }
 }

@@ -49,6 +49,7 @@ export class Application {
       this.app.listen(this.port, () => {
         console.log(`API server running on port ${this.port}`);
         console.log("Application started successfully");
+        console.log(`Datadog APM enabled: Service=${process.env.DD_SERVICE || "conduit-api"}, Env=${process.env.DD_ENV || "development"}`);
       });
     } catch (error) {
       console.error("Failed to start application:", error);
