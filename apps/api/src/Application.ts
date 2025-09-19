@@ -1,5 +1,7 @@
 import express, { Express } from "express";
 import { injectable, inject } from "tsyringe";
+import cors from "cors";
+import tracer from "./tracer.js";
 import type { IDatabaseService } from "./services/database.service.js";
 import type { IRouterService } from "./services/router.service.js";
 
@@ -19,6 +21,16 @@ export class Application {
   }
 
   private setupMiddleware(): void {
+    this.app.use((req, res, next) => {
+      const span = tracer.scope().active();
+      if (span) {
+        span.setTag("http.method", req.method);
+        span.setTag("http.url", req.url);
+        span.setTag("http.route", req.route?.path || req.path);
+      }
+      next();
+    });
+    this.app.use(cors());
     this.app.use(express.json());
   }
 
