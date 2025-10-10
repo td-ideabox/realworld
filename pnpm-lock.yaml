@@ -161,6 +161,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@conduit/transport':
+        specifier: workspace:*
+        version: link:../../packages/transport
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -307,6 +310,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.87.4
         version: 5.87.4(react@19.1.0)
+      '@tanstack/react-router':
+        specifier: ^1.131.41
+        version: 1.131.41(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next:
         specifier: ^15.5.0
         version: 15.5.0(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
