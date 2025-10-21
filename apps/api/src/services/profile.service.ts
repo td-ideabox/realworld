@@ -2,6 +2,7 @@ import { singleton, inject } from "tsyringe";
 import type { IUserRepository } from "../repositories/user.repository.js";
 import type { IFollowRepository } from "../repositories/follow.repository.js";
 import { User } from "@conduit/data";
+import { getAvatarUrl } from "../utils/avatar.js";
 
 export interface Profile {
   username: string;
@@ -38,7 +39,7 @@ export class ProfileService implements IProfileService {
     return {
       username: user.username,
       bio: user.bio,
-      image: user.image,
+      image: await getAvatarUrl(user.image),
       following
     };
   }
@@ -62,7 +63,7 @@ export class ProfileService implements IProfileService {
     return {
       username: userToFollow.username,
       bio: userToFollow.bio,
-      image: userToFollow.image,
+      image: await getAvatarUrl(userToFollow.image),
       following: true
     };
   }
@@ -79,7 +80,7 @@ export class ProfileService implements IProfileService {
     return {
       username: userToUnfollow.username,
       bio: userToUnfollow.bio,
-      image: userToUnfollow.image,
+      image: await getAvatarUrl(userToUnfollow.image),
       following: false
     };
   }

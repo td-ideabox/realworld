@@ -3,6 +3,7 @@ import type { IUserRepository } from "../repositories/user.repository.js";
 import type { ICognitoService } from "./cognito.service.js";
 import type { CognitoUser, CognitoAuthResult } from "./cognito.service.js";
 import { User, NewUser } from "@conduit/data";
+import { getRandomCatImageUrl } from "../utils/avatar.js";
 
 export interface IUserService {
   getUserById(id: number): Promise<User | null>;
@@ -51,13 +52,16 @@ export class UserService implements IUserService {
     // Create user in Cognito first
     const cognitoUser = await this.cognitoService.registerUser(username, email, password);
 
+    // Get a random cat image for the default avatar
+    const defaultAvatar = await getRandomCatImageUrl();
+
     // Create local user record
     const user = await this.userRepository.create({
       username,
       email,
       password: '', // We don't store passwords locally when using Cognito
       bio: null,
-      image: null
+      image: defaultAvatar
     });
 
     return { user, cognitoUser };
@@ -80,13 +84,16 @@ export class UserService implements IUserService {
     let user = await this.getUserByEmail(cognitoUser.email);
 
     if (!user) {
+      // Get a random cat image if Cognito user doesn't have one
+      const defaultAvatar = cognitoUser.image || await getRandomCatImageUrl();
+
       // Create new local user record
       user = await this.userRepository.create({
         username: cognitoUser.username,
         email: cognitoUser.email,
         password: '',
         bio: cognitoUser.bio || null,
-        image: cognitoUser.image || null
+        image: defaultAvatar
       });
     } else {
       // Update existing user with Cognito data
