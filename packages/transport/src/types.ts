@@ -20,7 +20,7 @@ import {
   ErrorSchema,
   ArticleQuerySchema,
   FeedQuerySchema,
-} from './schemas';
+} from './schemas.js';
 
 // Core types
 export type User = z.infer<typeof UserSchema>;

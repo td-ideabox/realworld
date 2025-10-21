@@ -20,7 +20,7 @@ import {
   ErrorSchema,
   ArticleQuerySchema,
   FeedQuerySchema,
-} from '../schemas';
+} from '../schemas.js';
 
 describe('Core Entity Schemas', () => {
   describe('UserSchema', () => {
