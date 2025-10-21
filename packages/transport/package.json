@@ -1,6 +1,7 @@
 {
   "name": "@conduit/transport",
   "version": "1.0.0",
+  "type": "module",
   "description": "Transport layer for Conduit API communication",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
