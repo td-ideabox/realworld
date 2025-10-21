@@ -5,6 +5,7 @@ import type { ICognitoService } from "../services/cognito.service.js";
 import type { IRouterService } from "../services/router.service.js";
 import { AuthenticatedRequest } from "../middleware/auth.middleware.js";
 import { LoginRequestSchema, RegisterRequestSchema, UpdateUserRequestSchema } from "@conduit/transport";
+import { getAvatarUrl } from "../utils/avatar.js";
 
 @injectable()
 export class UserController {
@@ -50,7 +51,7 @@ export class UserController {
           token: authResult.idToken, // Use Cognito's ID token
           username: user.username,
           bio: user.bio,
-          image: user.image
+          image: await getAvatarUrl(user.image)
         }
       });
     } catch (error: any) {
@@ -110,7 +111,7 @@ export class UserController {
           token: authResult.idToken, // Use Cognito's ID token
           username: user.username,
           bio: user.bio,
-          image: user.image
+          image: await getAvatarUrl(user.image)
         }
       });
     } catch (error: any) {
@@ -151,7 +152,7 @@ export class UserController {
               token: req.headers.authorization?.split(' ')[1] || '', // Return the current token
               username: syncedUser.username,
               bio: syncedUser.bio,
-              image: syncedUser.image
+              image: await getAvatarUrl(syncedUser.image)
             }
           });
           return;
@@ -169,7 +170,7 @@ export class UserController {
           token: req.headers.authorization?.split(' ')[1] || '', // Return the current token
           username: user.username,
           bio: user.bio,
-          image: user.image
+          image: await getAvatarUrl(user.image)
         }
       });
     } catch (error) {
@@ -262,7 +263,7 @@ export class UserController {
           token: req.headers.authorization?.split(' ')[1] || '', // Return the current token
           username: updatedUser.username,
           bio: updatedUser.bio,
-          image: updatedUser.image
+          image: await getAvatarUrl(updatedUser.image)
         }
       });
     } catch (error) {
