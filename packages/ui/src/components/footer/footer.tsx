@@ -16,7 +16,7 @@ export const Footer = ({ onLogoClick }: FooterProps) => {
             onLogoClick?.();
           }}
         >
-          conduit
+          Real World
         </a>
         <span className="attribution">
           An interactive learning project from{" "}

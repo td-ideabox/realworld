@@ -37,7 +37,7 @@ export const Header = ({
             onHomeClick?.();
           }}
         >
-          conduit
+          Real World
         </a>
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
