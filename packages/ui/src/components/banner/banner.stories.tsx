@@ -11,7 +11,7 @@ export const CustomContent: Story = () => (
 );
 
 export const ShortSubtitle: Story = () => (
-  <Banner title="conduit" subtitle="Share knowledge." />
+  <Banner title="Real World" subtitle="Share knowledge." />
 );
 
 Default.meta = {

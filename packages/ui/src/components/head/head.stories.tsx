@@ -10,7 +10,7 @@ export const CustomTitle: Story = () => (
 export const WithChildren: Story = () => (
   <Head title="With Additional Meta">
     <meta name="author" content="John Doe" />
-    <meta name="keywords" content="react,typescript,conduit" />
+    <meta name="keywords" content="react,typescript,realworld" />
   </Head>
 );
 

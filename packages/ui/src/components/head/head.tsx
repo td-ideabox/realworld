@@ -9,7 +9,7 @@ interface HeadProps {
 }
 
 export const Head = ({
-  title = "Conduit",
+  title = "Real World",
   description = "A place to share your knowledge.",
   children
 }: HeadProps) => {
