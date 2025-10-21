@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ConduitApiClient } from '../client';
+import { ConduitApiClient } from '../client.js';
 
 // Mock fetch globally
 const mockFetch = vi.fn();

@@ -18,7 +18,7 @@ import {
   TagsResponse,
   ArticleQuery,
   FeedQuery,
-} from './types';
+} from './types.js';
 import {
   LoginRequestSchema,
   RegisterRequestSchema,
@@ -34,7 +34,7 @@ import {
   CommentsResponseSchema,
   TagsResponseSchema,
   ErrorSchema,
-} from './schemas';
+} from './schemas.js';
 
 export class ConduitApiClient {
   private baseUrl: string;

@@ -1,6 +1,7 @@
 {
   "name": "@conduit/data",
   "version": "1.0.0",
+  "type": "module",
   "description": "Database models and entities for Conduit using Drizzle ORM",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
