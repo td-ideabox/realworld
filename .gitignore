@@ -38,6 +38,7 @@ cdk.out/
 
 # TypeScript compilation output
 lib/
+*.tsbuildinfo
 
 
 # Debug

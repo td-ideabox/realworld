@@ -6,7 +6,7 @@ interface BannerProps {
 }
 
 export const Banner = ({
-  title = "conduit",
+  title = "Real World",
   subtitle = "A place to share your knowledge."
 }: BannerProps) => {
   return (

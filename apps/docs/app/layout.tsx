@@ -12,8 +12,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Conduit Docs",
-  description: "Documentation for Conduit - A place to share your knowledge.",
+  title: "Real World Docs",
+  description: "Documentation for Real World - A place to share your knowledge.",
 };
 
 export default function RootLayout({
