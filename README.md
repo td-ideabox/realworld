@@ -25,6 +25,10 @@ This Turborepo has some additional tools already set up for you:
 - [Prettier](https://prettier.io) for code formatting
 - [pnpm](https://pnpm.io/) as the package manager
 
+### Future Enhancements
+
+- [Sentry](https://sentry.io/) for error tracking and monitoring (planned)
+
 ## Development
 
 To get started, install the dependencies:
