@@ -1,3 +1,4 @@
+import "./tracer.js";
 import "./container.js";
 import { container } from "./container.js";
 import { Application } from "./Application.js";
